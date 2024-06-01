@@ -1,0 +1,51 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { ParseIntPipe } from '@nestjs/common';
+import { SaleService } from './sale.service';
+import { SaleDto } from './dto/sale.dto';
+import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
+
+@Controller('sale')
+export class SaleController {
+  constructor(private readonly saleService: SaleService) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Post()
+  create(@Request() req, @Body() dto: SaleDto) {
+    return this.saleService.create(req.user.email, dto);
+  }
+
+  @Get()
+  findAll() {
+    return this.saleService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.saleService.findOne(id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: SaleDto,
+    @Request() req,
+  ) {
+    return this.saleService.update(id, req.user.email, dto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.saleService.remove(id);
+  }
+}
