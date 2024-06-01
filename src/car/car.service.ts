@@ -1,0 +1,77 @@
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CarDto } from './dto/car.dto';
+
+@Injectable()
+export class CarService {
+  constructor(private prismaService: PrismaService) {}
+
+  async create(dto: CarDto) {
+    try {
+      const car = await this.prismaService.car.create({
+        data: {
+          ...dto,
+          year: Number(dto.year),
+          mileage: Number(dto.mileage),
+          purchasePrice: Number(dto.purchasePrice),
+          rentalPricePerDay: Number(dto.rentalPricePerDay),
+          status: dto.status,
+        },
+      });
+      return car;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findAll() {
+    const cars = this.prismaService.car.findMany();
+    return cars;
+  }
+
+  async findOne(id: number) {
+    const car = await this.prismaService.car.findUnique({
+      where: { id },
+    });
+    if (!car) {
+      throw new NotFoundException(`Car with ID ${id} not found`);
+    }
+    return car;
+  }
+
+  async update(id: number, dto: CarDto) {
+    try {
+      const car = await this.prismaService.car.findUnique({
+        where: { id },
+      });
+      if (!car) {
+        throw new NotFoundException(`Car with ID ${id} not found`);
+      }
+      return this.prismaService.car.update({
+        where: { id },
+        data: {
+          ...dto,
+          year: Number(dto.year),
+          mileage: Number(dto.mileage),
+          purchasePrice: Number(dto.purchasePrice),
+          rentalPricePerDay: Number(dto.rentalPricePerDay),
+          status: dto.status,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async remove(id: number) {
+    const car = await this.prismaService.car.findUnique({
+      where: { id },
+    });
+    if (!car) {
+      throw new NotFoundException(`Car with ID ${id} not found`);
+    }
+    return this.prismaService.car.delete({
+      where: { id },
+    });
+  }
+}
