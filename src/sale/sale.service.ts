@@ -28,7 +28,7 @@ export class SaleService {
             connect: { email: user.email },
           },
           car: {
-            connect: { id: Number(dto.carId) },
+            connect: { id: dto.carId.toString() },
           },
           saleDate: new Date(dto.saleDate),
           salePrice: Number(dto.salePrice),
@@ -45,7 +45,7 @@ export class SaleService {
     return sales;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const sale = await this.prismaService.sale.findUnique({
       where: { id },
     });
@@ -55,7 +55,7 @@ export class SaleService {
     return sale;
   }
 
-  async update(id: number, email: string, dto: SaleDto) {
+  async update(id: string, email: string, dto: SaleDto) {
     const user = await this.userService.findOne(email);
 
     if (!user) {
@@ -67,7 +67,7 @@ export class SaleService {
         where: { id },
         data: {
           car: {
-            connect: { id: Number(dto.carId) },
+            connect: { id: dto.carId.toString() },
           },
           saleDate: new Date(dto.saleDate),
           salePrice: Number(dto.salePrice),
@@ -78,7 +78,7 @@ export class SaleService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const sale = await this.prismaService.sale.findUnique({
       where: { id },
     });

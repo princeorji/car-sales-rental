@@ -29,7 +29,7 @@ export class CarService {
     return cars;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const car = await this.prismaService.car.findUnique({
       where: { id },
     });
@@ -39,7 +39,7 @@ export class CarService {
     return car;
   }
 
-  async update(id: number, dto: CarDto) {
+  async update(id: string, dto: CarDto) {
     try {
       const car = await this.prismaService.car.findUnique({
         where: { id },
@@ -63,7 +63,7 @@ export class CarService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const car = await this.prismaService.car.findUnique({
       where: { id },
     });

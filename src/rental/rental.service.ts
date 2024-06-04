@@ -28,7 +28,7 @@ export class RentalService {
             connect: { email: user.email },
           },
           car: {
-            connect: { id: Number(dto.carId) },
+            connect: { id: dto.carId.toString() },
           },
           rentalStartDate: new Date(dto.rentalStartDate),
           rentalEndDate: new Date(dto.rentalEndDate),
@@ -47,7 +47,7 @@ export class RentalService {
     return rentals;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     const rental = await this.prismaService.rental.findUnique({
       where: { id },
     });
@@ -57,7 +57,7 @@ export class RentalService {
     return rental;
   }
 
-  async update(id: number, email: string, dto: RentalDto) {
+  async update(id: string, email: string, dto: RentalDto) {
     const user = await this.userService.findOne(email);
 
     if (!user) {
@@ -69,7 +69,7 @@ export class RentalService {
         where: { id },
         data: {
           car: {
-            connect: { id: Number(dto.carId) },
+            connect: { id: dto.carId.toString() },
           },
           rentalStartDate: new Date(dto.rentalStartDate),
           rentalEndDate: new Date(dto.rentalEndDate),
@@ -82,7 +82,7 @@ export class RentalService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     const rental = await this.prismaService.rental.findUnique({
       where: { id },
     });

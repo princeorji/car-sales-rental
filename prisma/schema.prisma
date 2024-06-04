@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        Int     @default(autoincrement()) @id
+  id        String  @default(uuid()) @id
   firstName String
   lastName  String
   email     String  @unique
@@ -29,7 +29,7 @@ model User {
 }
 
 model Car {
-  id                Int     @default(autoincrement()) @id
+  id                String     @default(uuid()) @id
   make              String
   model             String
   year              Int
@@ -44,9 +44,9 @@ model Car {
 }
 
 model Sale {
-  id         Int      @id @default(autoincrement())
-  carId      Int      @unique
-  userId     Int
+  id         String      @id @default(uuid())
+  carId      String      @unique
+  userId     String
   saleDate   DateTime
   salePrice  Float
   car        Car      @relation(fields: [carId], references: [id])
@@ -54,9 +54,9 @@ model Sale {
 }
 
 model Rental {
-  id               Int      @id @default(autoincrement())
-  carId            Int
-  userId           Int
+  id               String      @id @default(uuid())
+  carId            String
+  userId           String
   rentalStartDate  DateTime
   rentalEndDate    DateTime
   rentalPrice      Float

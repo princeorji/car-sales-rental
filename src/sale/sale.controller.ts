@@ -9,7 +9,6 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ParseIntPipe } from '@nestjs/common';
 import { SaleService } from './sale.service';
 import { SaleDto } from './dto/sale.dto';
 import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
@@ -30,22 +29,18 @@ export class SaleController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: string) {
     return this.saleService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: SaleDto,
-    @Request() req,
-  ) {
+  update(@Param('id') id: string, @Body() dto: SaleDto, @Request() req) {
     return this.saleService.update(id, req.user.email, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.saleService.remove(id);
   }
 }

@@ -9,7 +9,6 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { ParseIntPipe } from '@nestjs/common';
 import { RentalService } from './rental.service';
 import { RentalDto } from './dto/rental.dto';
 import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
@@ -30,22 +29,18 @@ export class RentalController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: string) {
     return this.rentalService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: RentalDto,
-    @Request() req,
-  ) {
+  update(@Param('id') id: string, @Body() dto: RentalDto, @Request() req) {
     return this.rentalService.update(id, req.user.email, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.rentalService.remove(id);
   }
 }

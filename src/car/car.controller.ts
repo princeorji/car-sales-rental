@@ -5,16 +5,18 @@ import {
   Patch,
   Delete,
   Param,
-  ParseIntPipe,
   Body,
+  UseGuards,
 } from '@nestjs/common';
 import { CarService } from './car.service';
 import { CarDto } from './dto/car.dto';
+import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
 
 @Controller('car')
 export class CarController {
   constructor(private readonly carService: CarService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() dto: CarDto) {
     return this.carService.create(dto);
@@ -26,17 +28,19 @@ export class CarController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id') id: string) {
     return this.carService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: CarDto) {
+  update(@Param('id') id: string, @Body() dto: CarDto) {
     return this.carService.update(id, dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: string) {
     return this.carService.remove(id);
   }
 }

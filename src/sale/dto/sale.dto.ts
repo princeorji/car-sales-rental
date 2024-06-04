@@ -1,7 +1,7 @@
-import { IsDate, IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 
 export class SaleDto {
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
   carId: Number;
 
