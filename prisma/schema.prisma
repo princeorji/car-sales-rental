@@ -60,7 +60,6 @@ model Rental {
   rentalStartDate  DateTime
   rentalEndDate    DateTime
   rentalPrice      Float
-  status           RentalStatus
   car              Car  @relation(fields: [carId], references: [id])
   user             User @relation(fields: [userId], references: [id])
 }
@@ -74,10 +73,4 @@ enum CarStatus {
   Available
   Sold
   Rented
-}
-
-enum RentalStatus {
-  Pending
-  Active
-  Completed
 }
