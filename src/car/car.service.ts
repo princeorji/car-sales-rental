@@ -26,8 +26,8 @@ export class CarService {
   async findAll() {
     const cars = this.prismaService.car.findMany({
       where: {
-        status: 'Available'
-      }
+        status: 'Available',
+      },
     });
     return cars;
   }

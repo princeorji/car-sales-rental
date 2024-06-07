@@ -1,5 +1,4 @@
-import { RentalStatus } from '@prisma/client';
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 
 export class RentalDto {
   @IsUUID()
@@ -17,7 +16,4 @@ export class RentalDto {
   @IsNumber()
   @IsNotEmpty()
   rentalPrice: number;
-
-  @IsEnum(RentalStatus)
-  status: RentalStatus;
 }

@@ -33,7 +33,6 @@ export class RentalService {
           rentalStartDate: new Date(dto.rentalStartDate),
           rentalEndDate: new Date(dto.rentalEndDate),
           rentalPrice: Number(dto.rentalPrice),
-          status: dto.status,
         },
       });
 
@@ -71,7 +70,7 @@ export class RentalService {
     }
 
     try {
-      const rental =  await this.prismaService.rental.update({
+      const rental = await this.prismaService.rental.update({
         where: { id },
         data: {
           car: {
@@ -80,7 +79,6 @@ export class RentalService {
           rentalStartDate: new Date(dto.rentalStartDate),
           rentalEndDate: new Date(dto.rentalEndDate),
           rentalPrice: Number(dto.rentalPrice),
-          status: dto.status,
         },
       });
 
@@ -107,7 +105,7 @@ export class RentalService {
       where: { id: rental.carId },
       data: { status: 'Available' },
     });
-    
+
     return this.prismaService.rental.delete({
       where: { id },
     });
