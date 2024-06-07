@@ -36,6 +36,12 @@ export class RentalService {
           status: dto.status,
         },
       });
+
+      await this.prismaService.car.update({
+        where: { id: dto.carId.toString() },
+        data: { status: 'Rented' },
+      });
+
       return rental;
     } catch (error) {
       throw error;
@@ -65,7 +71,7 @@ export class RentalService {
     }
 
     try {
-      return await this.prismaService.rental.update({
+      const rental =  await this.prismaService.rental.update({
         where: { id },
         data: {
           car: {
@@ -77,6 +83,13 @@ export class RentalService {
           status: dto.status,
         },
       });
+
+      await this.prismaService.car.update({
+        where: { id: dto.carId.toString() },
+        data: { status: 'Rented' },
+      });
+
+      return rental;
     } catch (error) {
       throw error;
     }
@@ -89,6 +102,12 @@ export class RentalService {
     if (!rental) {
       throw new NotFoundException(`Rental with ID ${id} not found`);
     }
+
+    await this.prismaService.car.update({
+      where: { id: rental.carId },
+      data: { status: 'Available' },
+    });
+    
     return this.prismaService.rental.delete({
       where: { id },
     });

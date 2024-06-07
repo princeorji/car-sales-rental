@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CarDto } from './dto/car.dto';
+import { CarDto, updateCarDto } from './dto/car.dto';
 
 @Injectable()
 export class CarService {
@@ -15,7 +15,6 @@ export class CarService {
           mileage: Number(dto.mileage),
           purchasePrice: Number(dto.purchasePrice),
           rentalPricePerDay: Number(dto.rentalPricePerDay),
-          status: dto.status,
         },
       });
       return car;
@@ -25,7 +24,11 @@ export class CarService {
   }
 
   async findAll() {
-    const cars = this.prismaService.car.findMany();
+    const cars = this.prismaService.car.findMany({
+      where: {
+        status: 'Available'
+      }
+    });
     return cars;
   }
 
@@ -33,13 +36,13 @@ export class CarService {
     const car = await this.prismaService.car.findUnique({
       where: { id },
     });
-    if (!car) {
+    if (!car || car.status !== 'Available') {
       throw new NotFoundException(`Car with ID ${id} not found`);
     }
     return car;
   }
 
-  async update(id: string, dto: CarDto) {
+  async update(id: string, dto: updateCarDto) {
     try {
       const car = await this.prismaService.car.findUnique({
         where: { id },
