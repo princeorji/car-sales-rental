@@ -37,3 +37,8 @@ export class CarDto {
   @IsEnum(CarStatus)
   status: CarStatus;
 }
+
+export class updateCarDto extends CarDto {
+  @IsEnum(CarStatus)
+  status: CarStatus;
+}

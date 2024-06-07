@@ -39,6 +39,7 @@ export class RentalController {
     return this.rentalService.update(id, req.user.email, dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.rentalService.remove(id);

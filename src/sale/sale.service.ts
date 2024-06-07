@@ -34,6 +34,12 @@ export class SaleService {
           salePrice: Number(dto.salePrice),
         },
       });
+
+      await this.prismaService.car.update({
+        where: { id: dto.carId.toString() },
+        data: { status: 'Sold' },
+      });
+
       return sale;
     } catch (error) {
       throw error;
@@ -63,7 +69,7 @@ export class SaleService {
     }
 
     try {
-      return await this.prismaService.sale.update({
+      const sale =  await this.prismaService.sale.update({
         where: { id },
         data: {
           car: {
@@ -73,6 +79,13 @@ export class SaleService {
           salePrice: Number(dto.salePrice),
         },
       });
+
+      await this.prismaService.car.update({
+        where: { id: dto.carId.toString() },
+        data: { status: 'Sold' },
+      });
+
+      return sale;
     } catch (error) {
       throw error;
     }
@@ -85,6 +98,12 @@ export class SaleService {
     if (!sale) {
       throw new NotFoundException(`Sale with ID ${id} not found`);
     }
+
+    await this.prismaService.car.update({
+      where: { id: sale.carId.toString() },
+      data: { status: 'Available' },
+    });
+
     return this.prismaService.sale.delete({
       where: { id },
     });
