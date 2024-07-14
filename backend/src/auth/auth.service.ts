@@ -21,11 +21,10 @@ export class AuthService {
         data: {
           ...dto,
           password,
-          phone: dto.phone.toString(),
         },
       });
 
-      return { message: `Welcome ${user.firstName}` };
+      return { message: `Welcome ${user.name}` };
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         throw new ForbiddenException('Credentials taken');

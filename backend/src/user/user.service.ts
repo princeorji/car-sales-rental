@@ -5,45 +5,39 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private prismaService: PrismaService) {}
 
-  async findAll() {
-    const users = await this.prismaService.user.findMany({
-      select: {
-        firstName: true,
-        lastName: true,
-        email: true,
-        createdAt: true,
-      },
-    });
-
-    return users;
-  }
-
   async findOne(email: string) {
     try {
       const user = await this.prismaService.user.findUnique({
         where: { email },
 
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          email: true,
-          phone: true,
-          address: true,
-          sales: {
-            select: {
-              carId: true,
-            },
-          },
-          rentals: {
-            select: {
-              carId: true,
-            },
-          },
+        include: {
+          sales: true,
+          rentals: true,
         },
       });
 
-      return user;
+      return {
+        data: {
+          select: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            sales: user.sales.map((sales) => ({
+              id: sales.id,
+              car: sales.carId,
+              price: sales.salePrice,
+              date: sales.saleDate,
+            })),
+          },
+          rentals: user.rentals.map((rentals) => ({
+            id: rentals.id,
+            car: rentals.carId,
+            price: rentals.rentalPrice,
+            start: rentals.rentalStartDate,
+            end: rentals.rentalEndDate,
+          })),
+        },
+      };
     } catch (error) {
       throw error;
     }

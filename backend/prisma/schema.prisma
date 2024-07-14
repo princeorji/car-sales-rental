@@ -15,17 +15,17 @@ datasource db {
 
 model User {
   id        String  @default(uuid()) @id
-  firstName String
-  lastName  String
+  name      String
   email     String  @unique
   password  String
-  phone     String
-  address   String
-  role      Role    @default(Customer)
+  role      Role    @default(user)
   sales     Sale[]
   rentals   Rental[]
+
   createdAt DateTime @default(now()) 
   updatedAt DateTime @default(now()) 
+
+  @@map("users")
 }
 
 model Car {
@@ -41,6 +41,8 @@ model Car {
   status            CarStatus
   sales             Sale?
   rentals           Rental[]
+
+  @@map("cars")
 }
 
 model Sale {
@@ -51,6 +53,8 @@ model Sale {
   salePrice  Float
   car        Car      @relation(fields: [carId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
+
+  @@map("sales")
 }
 
 model Rental {
@@ -62,15 +66,21 @@ model Rental {
   rentalPrice      Float
   car              Car  @relation(fields: [carId], references: [id])
   user             User @relation(fields: [userId], references: [id])
+
+  @@map("rentals")
 }
 
 enum Role {
-  Admin
-  Customer
+  admin
+  user
+
+  @@map("role")
 }
 
 enum CarStatus {
-  Available
-  Sold
-  Rented
+  available
+  sold
+  rented
+
+  @@map("cars_status")
 }

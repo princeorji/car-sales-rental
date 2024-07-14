@@ -25,7 +25,7 @@ export class RentalService {
       const rental = await this.prismaService.rental.create({
         data: {
           user: {
-            connect: { email: user.email },
+            connect: { email },
           },
           car: {
             connect: { id: dto.carId.toString() },
@@ -38,7 +38,7 @@ export class RentalService {
 
       await this.prismaService.car.update({
         where: { id: dto.carId.toString() },
-        data: { status: 'Rented' },
+        data: { status: 'rented' },
       });
 
       return rental;
@@ -84,7 +84,7 @@ export class RentalService {
 
       await this.prismaService.car.update({
         where: { id: dto.carId.toString() },
-        data: { status: 'Rented' },
+        data: { status: 'rented' },
       });
 
       return rental;
@@ -103,7 +103,7 @@ export class RentalService {
 
     await this.prismaService.car.update({
       where: { id: rental.carId },
-      data: { status: 'Available' },
+      data: { status: 'available' },
     });
 
     return this.prismaService.rental.delete({

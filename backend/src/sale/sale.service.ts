@@ -25,7 +25,7 @@ export class SaleService {
       const sale = await this.prismaService.sale.create({
         data: {
           user: {
-            connect: { email: user.email },
+            connect: { email },
           },
           car: {
             connect: { id: dto.carId.toString() },
@@ -37,7 +37,7 @@ export class SaleService {
 
       await this.prismaService.car.update({
         where: { id: dto.carId.toString() },
-        data: { status: 'Sold' },
+        data: { status: 'sold' },
       });
 
       return sale;
@@ -82,7 +82,7 @@ export class SaleService {
 
       await this.prismaService.car.update({
         where: { id: dto.carId.toString() },
-        data: { status: 'Sold' },
+        data: { status: 'sold' },
       });
 
       return sale;
@@ -101,7 +101,7 @@ export class SaleService {
 
     await this.prismaService.car.update({
       where: { id: sale.carId.toString() },
-      data: { status: 'Available' },
+      data: { status: 'available' },
     });
 
     return this.prismaService.sale.delete({

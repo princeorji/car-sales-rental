@@ -26,7 +26,7 @@ export class CarService {
   async findAll() {
     const cars = this.prismaService.car.findMany({
       where: {
-        status: 'Available',
+        status: 'available',
       },
     });
     return cars;
@@ -36,7 +36,7 @@ export class CarService {
     const car = await this.prismaService.car.findUnique({
       where: { id },
     });
-    if (!car || car.status !== 'Available') {
+    if (!car || car.status !== 'available') {
       throw new NotFoundException(`Car with ID ${id} not found`);
     }
     return car;
