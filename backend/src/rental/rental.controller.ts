@@ -8,6 +8,8 @@ import {
   Post,
   Request,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { RentalService } from './rental.service';
 import { RentalDto } from './dto/rental.dto';
@@ -19,6 +21,7 @@ export class RentalController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Request() req, @Body() dto: RentalDto) {
     return this.rentalService.create(req.user.email, dto);
   }

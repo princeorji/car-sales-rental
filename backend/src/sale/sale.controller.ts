@@ -8,6 +8,8 @@ import {
   Post,
   Request,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { SaleService } from './sale.service';
 import { SaleDto } from './dto/sale.dto';
@@ -19,6 +21,7 @@ export class SaleController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Request() req, @Body() dto: SaleDto) {
     return this.saleService.create(req.user.email, dto);
   }

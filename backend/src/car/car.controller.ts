@@ -7,6 +7,8 @@ import {
   Param,
   Body,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CarService } from './car.service';
 import { CarDto } from './dto/car.dto';
@@ -18,6 +20,7 @@ export class CarController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() dto: CarDto) {
     return this.carService.create(dto);
   }

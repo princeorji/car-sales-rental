@@ -2,18 +2,18 @@ import { IsDate, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 
 export class RentalDto {
   @IsUUID()
-  @IsNotEmpty()
-  carId: String;
+  @IsNotEmpty({ message: 'carId must not be null' })
+  carId: string;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Rental start date must not be null' })
   rentalStartDate: Date;
 
   @IsDate()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Rental end date must not be null' })
   rentalEndDate: Date;
 
   @IsNumber()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Rental price must not be null' })
   rentalPrice: number;
 }

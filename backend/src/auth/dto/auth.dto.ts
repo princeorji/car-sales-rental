@@ -1,36 +1,18 @@
-import {
-  IsEmail,
-  IsString,
-  IsNotEmpty,
-  MinLength,
-  IsNumber,
-} from 'class-validator';
+import { IsEmail, IsString, IsNotEmpty, MinLength } from 'class-validator';
 
 export class SignInDto {
-  @IsString()
-  @IsEmail()
+  @IsEmail({}, { message: 'Email must be valid' })
+  @IsNotEmpty({ message: 'Email must be unique and must not be null' })
   email: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Password must not be null' })
   @MinLength(6)
   password: string;
 }
 
 export class SignUpDto extends SignInDto {
   @IsString()
-  @IsNotEmpty()
-  firstName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  lastName: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  phone: number;
-
-  @IsString()
-  @IsNotEmpty()
-  address: string;
+  @IsNotEmpty({ message: 'Name must not be null' })
+  name: string;
 }
