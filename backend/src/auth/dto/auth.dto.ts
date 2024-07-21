@@ -1,4 +1,11 @@
-import { IsEmail, IsString, IsNotEmpty, MinLength } from 'class-validator';
+import { Role } from '@prisma/client';
+import {
+  IsEmail,
+  IsString,
+  IsNotEmpty,
+  MinLength,
+  IsEnum,
+} from 'class-validator';
 
 export class SignInDto {
   @IsEmail({}, { message: 'Email must be valid' })
@@ -15,4 +22,7 @@ export class SignUpDto extends SignInDto {
   @IsString()
   @IsNotEmpty({ message: 'Name must not be null' })
   name: string;
+
+  @IsEnum(Role)
+  userType: Role;
 }
