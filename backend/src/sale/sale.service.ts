@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from 'src/prisma.service';
 import { SaleDto } from './dto/sale.dto';
 import { UserService } from 'src/user/user.service';
 
@@ -28,7 +28,7 @@ export class SaleService {
             connect: { email },
           },
           car: {
-            connect: { id: dto.carId.toString() },
+            connect: { id: dto.carId },
           },
           saleDate: new Date(dto.saleDate),
           salePrice: Number(dto.salePrice),
@@ -68,7 +68,7 @@ export class SaleService {
         where: { id },
         data: {
           car: {
-            connect: { id: dto.carId.toString() },
+            connect: { id: dto.carId },
           },
           saleDate: new Date(dto.saleDate),
           salePrice: Number(dto.salePrice),
