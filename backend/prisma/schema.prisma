@@ -39,7 +39,7 @@ model Car {
   purchasePrice     Float
   rentalPricePerDay Float
   status            CarStatus
-  sales             Sale?
+  sales             Sale[]
   rentals           Rental[]
 
   @@map("cars")

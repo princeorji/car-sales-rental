@@ -22,9 +22,9 @@ export class CarDto {
   @IsNotEmpty({ message: 'Color must not be null' })
   color: string;
 
-  @IsString()
+  @IsNumber()
   @IsNotEmpty({ message: 'Mileage must not be null' })
-  mileage: string;
+  mileage: number;
 
   @IsNumber()
   @IsNotEmpty({ message: 'Purchase price must not be null' })

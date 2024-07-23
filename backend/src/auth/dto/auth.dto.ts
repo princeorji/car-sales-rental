@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   MinLength,
   IsEnum,
+  IsOptional,
 } from 'class-validator';
 
 export class SignInDto {
@@ -23,6 +24,7 @@ export class SignUpDto extends SignInDto {
   @IsNotEmpty({ message: 'Name must not be null' })
   name: string;
 
+  @IsOptional()
   @IsEnum(Role)
-  userType: Role;
+  userType?: Role;
 }

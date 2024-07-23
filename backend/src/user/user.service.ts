@@ -5,14 +5,22 @@ import { PrismaService } from 'src/prisma.service';
 export class UserService {
   constructor(private prismaService: PrismaService) {}
 
-  async findOne(email: string) {
+  async findOne(id: string) {
     try {
       const user = await this.prismaService.user.findUnique({
-        where: { email },
+        where: { id },
 
         include: {
-          sales: true,
-          rentals: true,
+          sales: {
+            include: {
+              car: true
+            }
+          },
+          rentals: {
+            include: {
+              car: true
+            }
+          }
         },
       });
 
@@ -22,20 +30,20 @@ export class UserService {
             id: user.id,
             name: user.name,
             email: user.email,
-            sales: user.sales.map((sales) => ({
-              id: sales.id,
-              car: sales.carId,
-              price: sales.salePrice,
-              date: sales.saleDate,
+            sales: user.sales.map((sale) => ({
+              id: sale.id,
+              car: sale.car.make,
+              price: sale.salePrice,
+              date: sale.saleDate,
+            })),
+            rentals: user.rentals.map((rental) => ({
+              id: rental.id,
+              car: rental.car.make,
+              price: rental.rentalPrice,
+              start: rental.rentalStartDate,
+              end: rental.rentalEndDate,
             })),
           },
-          rentals: user.rentals.map((rentals) => ({
-            id: rentals.id,
-            car: rentals.carId,
-            price: rentals.rentalPrice,
-            start: rentals.rentalStartDate,
-            end: rentals.rentalEndDate,
-          })),
         },
       };
     } catch (error) {

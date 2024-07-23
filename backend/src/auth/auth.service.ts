@@ -43,7 +43,14 @@ export class AuthService {
       if (!isCorrectPassword)
         throw new ForbiddenException('Incorrect Credentials');
 
-      return this.signToken(user.id, user.email);
+      const token = await this.signToken(user.id, user.email);
+
+      return {
+        data: {
+          userId: user.id,
+          access_token: token.access_token,
+        }
+      };
     } catch (error) {
       if (error.code == 'P2025')
         throw new ForbiddenException('Incorrect Credentials');

@@ -7,8 +7,8 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
-  profile(@Param('email') email: string) {
-    return this.userService.findOne(email);
+  @Get(':id')
+  profile(@Param('id') id: string) {
+    return this.userService.findOne(id);
   }
 }
