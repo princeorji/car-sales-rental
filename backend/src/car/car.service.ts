@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CarDto, updateCarDto } from './dto/car.dto';
 
@@ -19,7 +19,7 @@ export class CarService {
       });
       return car;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -37,7 +37,7 @@ export class CarService {
       where: { id },
     });
     if (!car || car.status !== 'available') {
-      throw new NotFoundException(`Car with ID ${id} not found`);
+      throw new NotFoundException('Car not found');
     }
     return car;
   }
@@ -48,7 +48,7 @@ export class CarService {
         where: { id },
       });
       if (!car) {
-        throw new NotFoundException(`Car with ID ${id} not found`);
+        throw new NotFoundException('Car not found');
       }
       return this.prismaService.car.update({
         where: { id },
@@ -62,7 +62,7 @@ export class CarService {
         },
       });
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -71,7 +71,7 @@ export class CarService {
       where: { id },
     });
     if (!car) {
-      throw new NotFoundException(`Car with ID ${id} not found`);
+      throw new NotFoundException('Car not found');
     }
     return this.prismaService.car.delete({
       where: { id },

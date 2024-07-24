@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
@@ -37,7 +38,7 @@ export class SaleService {
 
       return sale;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -51,7 +52,7 @@ export class SaleService {
       where: { id },
     });
     if (!sale) {
-      throw new NotFoundException(`Sale with ID ${id} not found`);
+      throw new NotFoundException('Sale not found');
     }
     return sale;
   }
@@ -77,7 +78,7 @@ export class SaleService {
 
       return sale;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -86,7 +87,7 @@ export class SaleService {
       where: { id },
     });
     if (!sale) {
-      throw new NotFoundException(`Sale with ID ${id} not found`);
+      throw new NotFoundException('Sale with not found');
     }
 
     return this.prismaService.sale.delete({

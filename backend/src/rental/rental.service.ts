@@ -1,6 +1,7 @@
 import {
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
@@ -38,7 +39,7 @@ export class RentalService {
 
       return rental;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -52,7 +53,7 @@ export class RentalService {
       where: { id },
     });
     if (!rental) {
-      throw new NotFoundException(`Rental with ID ${id} not found`);
+      throw new NotFoundException('Rental with not found');
     }
     return rental;
   }
@@ -79,7 +80,7 @@ export class RentalService {
 
       return rental;
     } catch (error) {
-      throw error;
+      throw new InternalServerErrorException(error);
     }
   }
 
@@ -88,7 +89,7 @@ export class RentalService {
       where: { id },
     });
     if (!rental) {
-      throw new NotFoundException(`Rental with ID ${id} not found`);
+      throw new NotFoundException('Rental with not found');
     }
 
     return this.prismaService.rental.delete({
