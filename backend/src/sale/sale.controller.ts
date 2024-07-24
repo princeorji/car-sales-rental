@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Request,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -22,8 +21,8 @@ export class SaleController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Request() req, @Body() dto: SaleDto) {
-    return this.saleService.create(req.user.email, dto);
+  create(@Body() dto: SaleDto) {
+    return this.saleService.create(dto);
   }
 
   @Get()
@@ -38,8 +37,8 @@ export class SaleController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: SaleDto, @Request() req) {
-    return this.saleService.update(id, req.user.email, dto);
+  update(@Param('id') id: string, @Body() dto: SaleDto) {
+    return this.saleService.update(id, dto);
   }
 
   @Delete(':id')

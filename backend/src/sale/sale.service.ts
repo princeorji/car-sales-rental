@@ -1,35 +1,26 @@
 import {
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { SaleDto } from './dto/sale.dto';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class SaleService {
   constructor(
     private prismaService: PrismaService,
-    private userService: UserService,
   ) {}
 
-  async create(email: string, dto: SaleDto) {
-    const user = await this.userService.findOne(email);
-
-    if (!user) {
-      throw new ForbiddenException('User not found or unauthorized');
-    }
-
+  async create(dto: SaleDto) {
     try {
       const sale = await this.prismaService.sale.create({
         data: {
-          user: {
-            connect: { email },
-          },
           car: {
             connect: { id: dto.carId },
+          },
+          user: {
+            connect: { id: dto.userId },
           },
           saleDate: new Date(dto.saleDate),
           salePrice: Number(dto.salePrice),
@@ -57,19 +48,16 @@ export class SaleService {
     return sale;
   }
 
-  async update(id: string, email: string, dto: SaleDto) {
-    const user = await this.userService.findOne(email);
-
-    if (!user) {
-      throw new ForbiddenException('User not found or unauthorized');
-    }
-
+  async update(id: string, dto: SaleDto) {
     try {
       const sale = await this.prismaService.sale.update({
         where: { id },
         data: {
           car: {
             connect: { id: dto.carId },
+          },
+          user: {
+            connect: { id: dto.userId },
           },
           saleDate: new Date(dto.saleDate),
           salePrice: Number(dto.salePrice),
