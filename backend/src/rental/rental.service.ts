@@ -1,35 +1,26 @@
 import {
-  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { RentalDto } from './dto/rental.dto';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class RentalService {
   constructor(
     private prismaService: PrismaService,
-    private userService: UserService,
   ) {}
 
-  async create(email: string, dto: RentalDto) {
-    const user = await this.userService.findOne(email);
-
-    if (!user) {
-      throw new ForbiddenException('User not found or unauthorized');
-    }
-
+  async create( dto: RentalDto) {
     try {
       const rental = await this.prismaService.rental.create({
         data: {
-          user: {
-            connect: { email },
-          },
           car: {
             connect: { id: dto.carId },
+          },
+          user: {
+            connect: { id: dto.userId },
           },
           rentalStartDate: new Date(dto.rentalStartDate),
           rentalEndDate: new Date(dto.rentalEndDate),
@@ -58,19 +49,16 @@ export class RentalService {
     return rental;
   }
 
-  async update(id: string, email: string, dto: RentalDto) {
-    const user = await this.userService.findOne(email);
-
-    if (!user) {
-      throw new ForbiddenException('User not found or unauthorized');
-    }
-
+  async update(id: string, dto: RentalDto) {
     try {
       const rental = await this.prismaService.rental.update({
         where: { id },
         data: {
           car: {
             connect: { id: dto.carId },
+          },
+          user: {
+            connect: { id: dto.userId },
           },
           rentalStartDate: new Date(dto.rentalStartDate),
           rentalEndDate: new Date(dto.rentalEndDate),

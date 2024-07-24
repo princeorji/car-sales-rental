@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Request,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -22,8 +21,8 @@ export class RentalController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Request() req, @Body() dto: RentalDto) {
-    return this.rentalService.create(req.user.email, dto);
+  create(@Body() dto: RentalDto) {
+    return this.rentalService.create( dto);
   }
 
   @Get()
@@ -38,8 +37,8 @@ export class RentalController {
 
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: RentalDto, @Request() req) {
-    return this.rentalService.update(id, req.user.email, dto);
+  update(@Param('id') id: string, @Body() dto: RentalDto) {
+    return this.rentalService.update(id, dto);
   }
 
   @UseGuards(JwtAuthGuard)
