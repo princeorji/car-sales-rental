@@ -49,7 +49,7 @@ export class AuthService {
         data: {
           userId: user.id,
           access_token: token.access_token,
-        }
+        },
       };
     } catch (error) {
       if (error.code == 'P2025')

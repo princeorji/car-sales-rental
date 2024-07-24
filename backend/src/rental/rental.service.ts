@@ -8,11 +8,9 @@ import { RentalDto } from './dto/rental.dto';
 
 @Injectable()
 export class RentalService {
-  constructor(
-    private prismaService: PrismaService,
-  ) {}
+  constructor(private prismaService: PrismaService) {}
 
-  async create( dto: RentalDto) {
+  async create(dto: RentalDto) {
     try {
       const rental = await this.prismaService.rental.create({
         data: {

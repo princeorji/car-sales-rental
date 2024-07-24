@@ -12,17 +12,17 @@ export class UserService {
       include: {
         sales: {
           include: {
-            car: true
-          }
+            car: true,
+          },
         },
         rentals: {
           include: {
-            car: true
-          }
-        }
+            car: true,
+          },
+        },
       },
     });
-    
+
     if (!user) {
       throw new NotFoundException('User not found');
     }

@@ -8,9 +8,7 @@ import { SaleDto } from './dto/sale.dto';
 
 @Injectable()
 export class SaleService {
-  constructor(
-    private prismaService: PrismaService,
-  ) {}
+  constructor(private prismaService: PrismaService) {}
 
   async create(dto: SaleDto) {
     try {

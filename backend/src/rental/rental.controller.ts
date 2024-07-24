@@ -22,7 +22,7 @@ export class RentalController {
   @Post()
   @UsePipes(new ValidationPipe())
   create(@Body() dto: RentalDto) {
-    return this.rentalService.create( dto);
+    return this.rentalService.create(dto);
   }
 
   @Get()
