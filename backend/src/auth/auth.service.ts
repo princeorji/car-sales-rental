@@ -5,6 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 import { SignInDto, SignUpDto } from './dto/auth.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import * as argon from 'argon2';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -43,7 +44,7 @@ export class AuthService {
       if (!isCorrectPassword)
         throw new ForbiddenException('Incorrect Credentials');
 
-      const token = await this.signToken(user.id, user.email);
+      const token = await this.signToken(user.id, user.email, user.userType);
 
       return {
         data: {
@@ -61,10 +62,12 @@ export class AuthService {
   private async signToken(
     userId: string,
     email: string,
+    role: Role,
   ): Promise<{ access_token: string }> {
     const payload = {
       sub: userId,
       email,
+      role,
     };
     const token = await this.jwt.signAsync(payload, {
       expiresIn: '120m',

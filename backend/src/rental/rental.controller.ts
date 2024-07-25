@@ -12,14 +12,18 @@ import {
 } from '@nestjs/common';
 import { RentalService } from './rental.service';
 import { RentalDto } from './dto/rental.dto';
-import { JwtAuthGuard } from 'src/auth/guard/auth.guard';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
+import { RoleGuard } from 'src/auth/guard/roles.guard';
+import { Roles } from 'src/auth/decorators/roles.deorator';
+import { Role } from 'src/auth/enums/role.enum';
 
 @Controller('rental')
 export class RentalController {
   constructor(private readonly rentalService: RentalService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RoleGuard)
   @UsePipes(new ValidationPipe())
   create(@Body() dto: RentalDto) {
     return this.rentalService.create(dto);
@@ -35,14 +39,16 @@ export class RentalController {
     return this.rentalService.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RoleGuard)
   update(@Param('id') id: string, @Body() dto: RentalDto) {
     return this.rentalService.update(id, dto);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Delete(':id')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard, RoleGuard)
   remove(@Param('id') id: string) {
     return this.rentalService.remove(id);
   }
